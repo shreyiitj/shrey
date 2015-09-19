@@ -1,0 +1,82 @@
+#include<iostream>
+#include<cstring>
+
+using namespace std;
+
+void lpsFunc(char*,int*,int);
+
+int main()
+{
+    int i;
+    int j=0;
+    string txt="AABAACAADAABAAABAA";
+    string pat = "AABA";
+    char *patPtr=&pat[0];
+    //string *patPtr=&pat;
+    int l1=txt.length();
+    int l2=pat.length();
+    int *lps;
+    lps=new int[l2];
+//    cout<<pat[0];
+
+    lpsFunc(patPtr,lps,l2);                       //preprocessing step
+
+
+    for(i=0;i<l1;i++)                          //kmp
+    {
+        if(txt[i]==pat[j])
+        {
+            if(j==l2-1)
+            {
+                cout<<"match found at"<<i-j<<endl;
+            }
+            j++; continue;
+        }
+        else
+        {
+            if(j==0)
+            {
+              continue;
+            }
+            else
+            {
+              j=lps[j-1];
+              i--;
+            }
+
+        }
+    }
+
+
+}
+
+void lpsFunc(char *patPtr,int *lps,int l2)
+{
+  lps[0]=0;
+  int i=0,j=1;
+                    //j is traversing the array and i is the other parameter
+  for(j=1;j<l2;j++)
+  {
+      if(patPtr[i]==patPtr[j])
+      {
+          lps[j]=i+1;
+          i++;
+
+      }
+      else
+      {
+        if(i==0)
+        {
+            lps[j]=0;
+
+        }
+        else
+        {
+            i=lps[i-1];
+            j--;
+        }
+      }
+  }
+
+}
+
